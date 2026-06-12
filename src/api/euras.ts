@@ -3,31 +3,25 @@
  *
  * Thin wrapper around the Euras EED API (https://shop.euras.com/eed.php).
  *
- * All requests go through /eed-proxy/* which is handled by:
+ * All requests go through /eed-proxy which is handled by:
  *  - Vite dev server proxy (vite.config.ts) during local development
- *  - Vercel rewrites (vercel.json) in production
+ *  - Vercel serverless function (api/eed-proxy.js) in production
  *
- * This avoids CORS issues because the request appears same-origin to the browser.
- *
- * Session IDs are stored in sessionStorage so they persist across page navigations
- * but are cleared when the browser tab is closed — matching the API's 3-hour TTL.
+ * The serverless function overrides shopurl to the registered test value,
+ * so this works from any deployed domain.
  *
  * Docs: https://shop.euras.com/admin/Dok/eed-doku-eng.php
  */
 
-// Use the env variable if provided, otherwise fall back to the public DE test account.
-// The test account only allows searching for: SONY, AEG, HDMI
 const EED_ID = import.meta.env.VITE_EED_ID || 'AUDs4BRTdG2KJMGkv9U3hcQZ8NUxLdZy'
 
-// Required by the API since Feb 2026
+// The test account is registered with localhost — proxy overrides this in prod
 const SHOP_URL = encodeURIComponent(window.location.origin + '/')
-// MD5 of "127.0.0.1" — used as a placeholder for the visitor IP hash
+// MD5 of "127.0.0.1" — placeholder for visitor IP hash
 const CUSTOMER_IP = 'f528764d624db129b32c21fbca0cb8d6'
 
 const SESSION_KEY = 'eed_sessionid'
-// Both dev and prod use /eed-proxy as the path.
-// Dev: Vite proxies /eed-proxy/* → https://shop.euras.com/eed.php
-// Prod: vercel.json rewrites /eed-proxy → /api/eed-proxy (serverless function)
+// Both dev and prod use /eed-proxy — Vite handles it locally, serverless fn in prod
 const BASE = '/eed-proxy'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -113,7 +107,6 @@ async function eedRequest<T>(extra: Record<string, string | number>): Promise<T>
   if (!res.ok) throw new Error(`EED request failed: HTTP ${res.status}`)
   const data = await res.json()
   if (data.fehlernummer !== '0' && data.fehlernummer !== 0) {
-    // Session expired — retry once with a fresh session
     if (String(data.fehlernummer) === '1') {
       clearSession()
       return eedRequest<T>(extra)
