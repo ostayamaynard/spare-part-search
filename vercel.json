@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/eed-proxy.js": {
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
     {
       "source": "/eed-proxy",
