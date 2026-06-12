@@ -25,7 +25,9 @@ const SHOP_URL = encodeURIComponent(window.location.origin + '/')
 const CUSTOMER_IP = 'f528764d624db129b32c21fbca0cb8d6'
 
 const SESSION_KEY = 'eed_sessionid'
-const BASE = '/eed-proxy/eed.php'
+// In production (Vercel): requests hit /api/eed-proxy (serverless function)
+// In local dev: requests hit /eed-proxy/eed.php (Vite proxy → shop.euras.com/eed.php)
+const BASE = import.meta.env.PROD ? '/api/eed-proxy' : '/eed-proxy/eed.php'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
