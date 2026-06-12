@@ -1,11 +1,16 @@
 {
+  "functions": {
+    "api/eed-proxy.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     {
-      "source": "/eed-proxy/:path*",
+      "source": "/eed-proxy",
       "destination": "/api/eed-proxy"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
