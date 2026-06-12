@@ -1,0 +1,147 @@
+/* ============================================================
+   Global styles — Spare Parts Search
+   Design: clean, industrial feel with amber accent
+   Fonts: Space Grotesk (headings), DM Sans (body), JetBrains Mono (codes)
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Colour palette */
+  --bg:           #f5f4f0;   /* off-white page background */
+  --surface:      #ffffff;   /* card / panel background */
+  --sidebar-bg:   #141414;   /* dark sidebar */
+  --sidebar-text: #e8e6e1;
+  --sidebar-muted: rgba(232, 230, 225, 0.45);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+
+  --text:         #1a1a1a;
+  --text-muted:   #6b6b6b;
+  --border:       #e2e0db;
+
+  --amber:        #e07b39;   /* primary accent */
+  --amber-light:  rgba(224, 123, 57, 0.12);
+
+  --destructive:  #dc2626;
+  --destructive-bg: rgba(220, 38, 38, 0.06);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Mono', monospace;
+
+  /* Spacing */
+  --radius:       4px;
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.25;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 100ms var(--ease-out);
+}
+
+input {
+  font-family: inherit;
+}
+
+/* ── Utility classes ──────────────────────────────────────── */
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ── Skeleton shimmer ─────────────────────────────────────── */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #ebe9e4 25%,
+    #e2e0db 50%,
+    #ebe9e4 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Product card ─────────────────────────────────────────── */
+
+.product-card {
+  border-left: 3px solid transparent;
+  transition:
+    border-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+
+.product-card:hover {
+  border-left-color: var(--amber);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.product-card.selected {
+  border-left-color: var(--amber);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Detail panel ─────────────────────────────────────────── */
+
+.detail-panel {
+  transition: transform 220ms var(--ease-out);
+}
+
+.detail-panel.open {
+  transform: translateX(0) !important;
+}
+
+/* ── Scrollbar (subtle) ───────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
