@@ -14,7 +14,7 @@
 
 // Server-side env vars — set in Vercel, not exposed to the browser
 const EED_ID = process.env.EED_ID || 'AUDs4BRTdG2KJMGkv9U3hcQZ8NUxLdZy'
-const EED_SHOP_URL = process.env.EED_SHOP_URL || 'http://localhost:5173/'
+const EED_SHOP_URL = process.env.EED_SHOP_URL || 'https://spare-part-search.vercel.app/'
 const IS_REAL_ACCOUNT = !!process.env.EED_ID
 
 const MOCK_ARTICLES = {
